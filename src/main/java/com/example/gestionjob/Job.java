@@ -8,45 +8,47 @@ import java.io.Serializable;
 
 
 @Entity
-public class Job implements Serializable{
-    private static final long serializableVerionUID=6;
+public class Job {
+    private static final long serialVersionUID=6;
     @Id
     @GeneratedValue
-    private int id;
+    private  int id;
+
+
     private String service;
-    private Boolean etat;
+
+
+    private boolean etat;
 
     public Job() {
-        super();
     }
 
-    public Job(String service, Boolean etat) {
+    public Job(String service, boolean etat) {
         this.service = service;
         this.etat = etat;
-    }
-
-    public String getService() {
-        return service;
-    }
-
-    public Boolean getEtat() {
-        return etat;
     }
 
     public int getId() {
         return id;
     }
 
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getService() {
+        return service;
     }
 
     public void setService(String service) {
         this.service = service;
     }
 
-    public void setEtat(Boolean etat) {
+    public boolean isEtat() {
+        return etat;
+    }
+
+    public void setEtat(boolean etat) {
         this.etat = etat;
     }
 }

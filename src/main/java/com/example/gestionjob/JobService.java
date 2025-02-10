@@ -1,36 +1,46 @@
 package com.example.gestionjob;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class JobService implements IJobService{
+import java.util.List;
+
+@Service
+public class JobService {
     @Autowired
-    private JobRepo JobRepository;
 
-    @Override
+    private JobRepository jobRepository;
     public Job addJob(Job job) {
-        return JobRepository.save(job);
+        return jobRepository.save(job);
     }
 
-    @Override
+    public List<Job> getAll(){
+        return jobRepository.findAll();
+    }
     public Job updateJob(int id, Job newJob) {
-        if (JobRepository.findById(id).isPresent()) {
+        if (jobRepository.findById(id).isPresent()) {
 
-           Job existingJob = JobRepository.findById(id).get(); existingJob.setService(newJob.getService()); existingJob.setEtat(newJob.getEtat());
+            Job existingJob = jobRepository.findById(id).get();
+            existingJob.setService(newJob.getService());
+            existingJob.setEtat(newJob.isEtat());
 
-            return JobRepository.save(existingJob);
+            return jobRepository.save(existingJob);
         } else
             return null;
-
+    }
+    public String deleteJob(int id) {
+        if (jobRepository.findById(id).isPresent()) {
+            jobRepository.deleteById(id);
+            return "Job supprimé";
+        } else
+            return "Job non supprimé";
     }
 
-    @Override
-    public String deleteJob(int id) {
-        if (JobRepository.findById(id).isPresent()) { JobRepository.deleteById(id);
-            return "candidat supprimé";
-        } else
-            return "candidat non supprimé";
-
+    public Job getJobById(int id){
+        if (jobRepository.findById(id).isPresent()){
+            Job J = jobRepository.findById(id).get();
+            return J;
+        }
+        else return null;
     }
 }

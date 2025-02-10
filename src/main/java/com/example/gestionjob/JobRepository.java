@@ -9,7 +9,5 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface JobRepo extends JpaRepository<Job,Integer> {
-    @Query("select c from Job c where c.service like :name")
-    Page<Job> JobByService(@Param("service") String n, Pageable pageable);
+public interface JobRepository extends  JpaRepository<Job , Integer> {
 }

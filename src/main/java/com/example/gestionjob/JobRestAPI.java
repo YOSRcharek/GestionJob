@@ -8,31 +8,32 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+
 @RestController
+@RequestMapping(value="job")
+
 public class JobRestAPI {
-    @Autowired
-    private JobRepo repository;
+
+    private String hello="Hello, i'm the Job MS";
+
+    @RequestMapping("/helloJ")
+    public String sayHello(){
+        return hello;
+    }
+
     @Autowired
     private JobService jobService;
-    @GetMapping("/Job/search/JobByService")
-    public Page<Job> searchJobByService(
-            @RequestParam("service") String Service,
-            Pageable pageable) {
-        return repository.JobByService("%" + Service + "%", pageable);
+
+    @GetMapping
+    public ResponseEntity<List<Job>> getAll() {
+        return new ResponseEntity<>(jobService.getAll(), HttpStatus.OK);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_XML_VALUE) @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Job> createJob(@RequestBody Job job) { return new ResponseEntity<>(jobService.addJob(job), HttpStatus.OK);
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Job> getJobById(@PathVariable int id){
+        return new ResponseEntity<>(jobService.getJobById(id), HttpStatus.OK);
+
     }
-
-    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE) @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Job> updateCandidat(@PathVariable(value = "id") int id,
-                                                   @RequestBody Job job){ return new ResponseEntity<>(jobService.updateJob(id,job),HttpStatus.OK);
-    }
-
-
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE) @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> deleteCandidat(@PathVariable(value = "id") int id){ return new ResponseEntity<>(jobService.deleteJob(id), HttpStatus.OK);
-    }
-
 }
